@@ -1,10 +1,7 @@
 // Define Mongoose
 const mongoose = require('mongoose');
 
-// Create a new instance of the Mongoose schema to define shape of each document
 const userSchema = new mongoose.Schema({
-    // Add individual properties and their types
-    // Setting required to true will disallow null values
     username: {
         type: String,
         required: true,
@@ -23,14 +20,12 @@ const userSchema = new mongoose.Schema({
             ref: 'Thought'
         }
     ],
-    friends:[
+    friends: [
         {
             type: Schema.Types.ObjectId,
-            ref: 'Friends'
+            ref: 'Users'
         }
     ],
-    // Use built in date method to get current date
-    //   lastAccessed: { type: Date, default: Date.now },
 });
 
 // Using mongoose.model() to compile a model based on the schema
@@ -52,4 +47,12 @@ User
     .then(result => console.log('Created new document', result))
     .catch(err => handleError(err));
 
+//Create a virtual called friendCount that retrieves the length of the user's friends array field on query.
+    userSchema.virtual('friendCount').get(function () {
+    return this.friend.length;
+});
+
+const User = mongoose.model('User', UserSchema);
+
+//Export the User
 module.exports = User;
