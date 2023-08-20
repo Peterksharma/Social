@@ -10,7 +10,7 @@ const getAllUsers = (req, res) => {
 };
 
 const getUserById = (req, res) => {
-    User.findOne({ _id: params.id })
+    User.findOne({ _id: req.params.id })
         .then(dbUserData => {
             if (!dbUserData) {
                 res.status(404).json({ message: 'No user found with this ID' })
